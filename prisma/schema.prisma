@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root@localhost:3306/carrent"
+}
+
+model Admin {
+  id   Int      @id @default(autoincrement())
+  nama_admin String   @default("")
+  email      String   @default("")
+  password   String   @default("")
+  createdAt  DateTime @default(now())
+  updateAt   DateTime @updatedAt
+}
+
+model Car {
+  car_id        Int      @id @default(autoincrement())
+  nopol         Int      @default(0)
+  merk_mobil    String   @default("")
+  harga_perhari Int      @default(0)
+  createdAt     DateTime @default(now())
+  updateAt      DateTime @updatedAt
+  Rent          Rent[]
+}
+
+model Rent {
+  rent_id      Int      @id @default(autoincrement())
+  car_id       Int      @default(0)
+  nama_penyewa String   @default("")
+  tanggal      DateTime @default(now())
+  lama_sewa    Int      @default(0)
+  total_harga  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updateAt     DateTime @updatedAt
+  car_details  Car      @relation(fields: [car_id], references: [car_id])
+}
